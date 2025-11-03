@@ -14,7 +14,7 @@ const Products = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   const PRODUCT_SERVICE_URL =
-    import.meta.env.VITE_PRODUCT_SERVICE_URL || 'http://localhost:4002';
+    import.meta.env.VITE_SERVICE_B_URL || 'http://localhost:8002';
 
   useEffect(() => {
     fetchProducts();
@@ -23,8 +23,8 @@ const Products = () => {
   const fetchProducts = async () => {
     try {
       setIsLoading(true);
-      const response = await axios.get(`${PRODUCT_SERVICE_URL}/products`);
-      setProducts(response.data.products);
+      const response = await axios.get(`${PRODUCT_SERVICE_URL}/catalog/products`);
+      setProducts(response.data);
     } catch (err) {
       setError('Failed to fetch products');
       console.error('Error fetching products:', err);
