@@ -23,7 +23,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [token, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const USER_SERVICE_URL =
-    import.meta.env.VITE_USER_SERVICE_URL || 'http://localhost:4001';
+    import.meta.env.VITE_SERVICE_A_URL || 'http://localhost:8001';
 
   useEffect(() => {
     // Check for stored token on mount
@@ -44,7 +44,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         password,
       });
 
-      const { token, user } = response.data;
+      const { access_token, user } = response.data;
+      const token = access_token || response.data.token;
       setToken(token);
       setUser(user);
       localStorage.setItem('token', token);
@@ -57,13 +58,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const register = async (email: string, password: string, name: string) => {
     try {
-      const response = await axios.post(`${USER_SERVICE_URL}/auth/register`, {
+      const response = await axios.post(`${USER_SERVICE_URL}/auth/signup`, {
         email,
         password,
-        name,
+        full_name: name,
       });
 
-      const { token, user } = response.data;
+      const { access_token, user } = response.data;
+      const token = access_token || response.data.token;
       setToken(token);
       setUser(user);
       localStorage.setItem('token', token);
